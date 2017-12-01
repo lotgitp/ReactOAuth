@@ -11,19 +11,18 @@ class Unit extends React.Component {
     }
 
     // Bindings
-    this.showAddForm = this.showAddForm.bind(this);
+    this.showAddForm = this.showAddForm.bind(this)
   }
 
   componentDidMount() {
     this.props.loadUnits()
   }
 
-  showAddForm() {
+  showAddForm(isShow) {
     this.setState({
-      isShowAddForm: true
+      isShowAddForm: isShow
     })
   }
-
 
   render() {
     const unitsTable = this.props.unit.map(u => {
@@ -35,6 +34,8 @@ class Unit extends React.Component {
           <td>{u.category}</td>
           <td>{u.slug}</td>
           <td>{u.description}</td>
+          <td><button onClick={this.props.removeUnit(u.id)}>Delete</button></td>
+          <td><button onClick={this.props.editUnit(u.id)}>Edit</button></td>
         </tr>
       )
     })
@@ -42,9 +43,14 @@ class Unit extends React.Component {
     return (
       <div style={{textAlign: 'left'}}>
         {(this.state.isShowAddForm) && (
-          <UnitCreate addUnit={this.props.addUnit} />
+          <UnitCreate
+            addUnit={this.props.addUnit}
+            closeForm={() => this.showAddForm(false)}
+          />
         )}
-        <button onClick={this.showAddForm}>Add New Unit</button>
+        {(this.state.isShowAddForm === false) && (
+          <button onClick={(e) => this.showAddForm(true)}>Add New Unit</button>
+        )}
 
         <table>
           <thead>
@@ -55,6 +61,7 @@ class Unit extends React.Component {
               <th>Category</th>
               <th>Slug</th>
               <th>Description</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -67,7 +74,8 @@ class Unit extends React.Component {
 }
 
 Unit.propTypes = {
-  loadUnits: PropTypes.func.isRequired
+  loadUnits: PropTypes.func.isRequired,
+  removeUnit: PropTypes.func.isRequired
 }
 
 export default Unit

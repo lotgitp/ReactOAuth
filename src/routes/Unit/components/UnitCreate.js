@@ -31,6 +31,7 @@ class UnitCreate extends React.Component {
     e.preventDefault()
 
     this.props.addUnit(this.state)
+    this.props.closeForm()
   }
 
   render() {
@@ -99,7 +100,8 @@ class UnitCreate extends React.Component {
 }
 
 UnitCreate.propTypes = {
-  addUnit: PropTypes.func.isRequired
+  addUnit: PropTypes.func.isRequired,
+  closeForm: PropTypes.func.isRequired
 }
 
 export default UnitCreate
